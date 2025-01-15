@@ -1,7 +1,7 @@
 package com.rs.attendanceManager.Service;
 
 import com.rs.attendanceManager.Entity.User;
-import com.rs.attendanceManager.UserRepo;
+import com.rs.attendanceManager.Repo.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -1,4 +1,4 @@
-package com.rs.attendanceManager;
+package com.rs.attendanceManager.Repo;
 
 import com.rs.attendanceManager.Entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
