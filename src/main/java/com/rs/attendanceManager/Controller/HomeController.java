@@ -18,7 +18,8 @@ public class HomeController {
 
     @Autowired
     UserService userService;
-
+    
+    @CrossOrigin
     @GetMapping("fetchUserBygrNo")
     public ResponseEntity<?> fetchUserBygrNo(@RequestParam String grNo) {
         Optional<User> user = userService.fetchUserBygrNo(grNo);
