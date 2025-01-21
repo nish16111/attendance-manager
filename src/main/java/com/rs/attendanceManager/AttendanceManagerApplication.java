@@ -8,7 +8,7 @@ public class AttendanceManagerApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(AttendanceManagerApplication.class, args);
-		System.out.println("Radhasoami Ji");
+		System.out.println("RadhaSoami Ji");
 	}
 
 }

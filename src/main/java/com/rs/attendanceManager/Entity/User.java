@@ -103,11 +103,11 @@ public class User implements Serializable {
         this.age = age;
     }
 
-    public boolean getInitiated() {
+    public boolean getIsInitiated() {
         return this.isInitiated;
     }
 
-    public void setInitiated(boolean isInitiated) {
+    public void setIsInitiated(boolean isInitiated) {
         this.isInitiated = isInitiated;
     }
 }

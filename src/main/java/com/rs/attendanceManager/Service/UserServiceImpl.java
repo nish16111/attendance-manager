@@ -18,4 +18,9 @@ public class UserServiceImpl implements UserService{
     public Optional<User> fetchUserBygrNo(String grNo) {
        return userRepo.findById(grNo);
     }
+
+    @Override
+    public User createUser(User user) {
+        return userRepo.save(user);
+    }
 }
