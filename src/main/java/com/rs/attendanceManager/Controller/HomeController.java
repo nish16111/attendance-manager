@@ -12,14 +12,13 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Optional;
 
 @RestController
+@CrossOrigin
 @RequestMapping("/home/users/")
-
 public class HomeController {
 
     @Autowired
     UserService userService;
 
-    @CrossOrigin
     @GetMapping("fetchUserBygrNo")
     public ResponseEntity<?> fetchUserBygrNo(@RequestParam String grNo) {
         Optional<User> user = userService.fetchUserBygrNo(grNo);
