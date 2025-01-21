@@ -49,5 +49,27 @@ public class HomeController {
         }
     }
 
-    
+    @PutMapping("updateUser")
+    public ResponseEntity<?> updateUser(@Valid @RequestBody User user) {
+        try{
+            User userResponse = userService.updateUser(user);
+            if(userResponse == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+            }
+            return ResponseEntity.ok(userResponse);
+
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error while updating user: " + e.getMessage());
+        }
+    }
+
+    @DeleteMapping("deleteUser")
+    public ResponseEntity<?> deleteUser(@RequestParam String grNo) {
+        try{
+            userService.deleteUser(grNo);
+            return ResponseEntity.ok("User with grNo: " + grNo + " removed successfully");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error while deleting the user: " + e.getMessage());
+        }
+    }
 }

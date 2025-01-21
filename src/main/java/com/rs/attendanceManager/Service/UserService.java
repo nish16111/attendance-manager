@@ -10,4 +10,8 @@ public interface UserService {
     Optional<User> fetchUserBygrNo(String grNo);
 
     User createUser(@Valid User user);
+
+    User updateUser(@Valid User user);
+
+    void deleteUser(String grNo);
 }

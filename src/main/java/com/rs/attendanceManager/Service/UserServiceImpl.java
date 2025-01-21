@@ -23,4 +23,20 @@ public class UserServiceImpl implements UserService{
     public User createUser(User user) {
         return userRepo.save(user);
     }
+
+    @Override
+    public User updateUser(User user) {
+        Optional<User> existingUserById = userRepo.findById(user.getGrNo());
+
+        if(existingUserById.isPresent()) {
+            return userRepo.save(user);
+        } else{
+            return null;
+        }
+    }
+
+    @Override
+    public void deleteUser(String grNo) {
+        userRepo.deleteById(grNo);
+    }
 }
