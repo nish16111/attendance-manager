@@ -1,5 +1,6 @@
 package com.rs.attendanceManager.Controller;
 
+import com.rs.attendanceManager.Dto.UserDto;
 import com.rs.attendanceManager.Entity.User;
 import com.rs.attendanceManager.Service.UserService;
 import jakarta.validation.Valid;
@@ -8,7 +9,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.math.BigDecimal;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -21,27 +26,44 @@ public class HomeController {
 
     @GetMapping("fetchUserBygrNo")
     public ResponseEntity<?> fetchUserBygrNo(@RequestParam String grNo) {
-        Optional<User> user = userService.fetchUserBygrNo(grNo);
-//        if(user.isPresent()) {
-//            return ResponseEntity.ok(user.get());
-//        } else {
-//            return ResponseEntity.status(404).body("User with grNo: " + grNo + " not found");
-//        }
-        try {
-            if (user.isPresent()) {
-                return ResponseEntity.ok(user.get());
-            } else {
-                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("User with grNo: " + grNo + " not found");
 
-            }
+        try {
+            return ResponseEntity.ok(userService.fetchUserBygrNo(grNo));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error while fetching user: " + e.getMessage());
         }
     }
 
     @PostMapping("createUser")
-    public ResponseEntity<?> createUser(@Valid @RequestBody User user) {
+    public ResponseEntity<?> createUser(
+            @RequestParam("grNo") String grNo,
+            @RequestParam("name") String name,
+            @RequestParam("department") String department,
+            @RequestParam("subDepartment") String subDepartment,
+            @RequestParam("totalAttendance") BigDecimal totalAttendance,
+            @RequestParam("photo") MultipartFile photo,
+            @RequestParam("mobileNumber") String mobileNumber,
+            @RequestParam("area") String area,
+            @RequestParam("age") int age,
+            @RequestParam("isInitiated") boolean isInitiated,
+            @RequestParam("remarks") String remarks,
+            @RequestParam("email") String email
+    ) {
         try {
+            User user = new User();
+            user.setGrNo(grNo);
+            user.setName(name);
+            user.setDepartment(department);
+            user.setSubDepartment(subDepartment);
+            user.setTotalAttendance(totalAttendance);
+            user.setPhoto(photo.getBytes());
+            user.setMobileNumber(mobileNumber);
+            user.setAge(age);
+            user.setArea(area);
+            user.setIsInitiated(isInitiated);
+            user.setRemarks(remarks);
+            user.setEmail(email);
+
             User userResponse = userService.createUser(user);
             return ResponseEntity.ok(userResponse);
         } catch (Exception e) {

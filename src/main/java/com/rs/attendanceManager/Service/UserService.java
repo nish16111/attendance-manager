@@ -1,13 +1,15 @@
 package com.rs.attendanceManager.Service;
 
+import com.rs.attendanceManager.Dto.UserDto;
 import com.rs.attendanceManager.Entity.User;
 import jakarta.validation.Valid;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Optional;
 
 public interface UserService {
 
-    Optional<User> fetchUserBygrNo(String grNo);
+    UserDto fetchUserBygrNo(String grNo);
 
     User createUser(@Valid User user);
 

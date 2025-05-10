@@ -20,14 +20,17 @@ public class User implements Serializable {
     @Column(nullable = false)
     private String department;
 
+    @Column(nullable = false)
+    private String subDepartment;
+
     @Column(nullable = false, precision = 5, scale = 2)
     private BigDecimal totalAttendance;
 
     @Lob
-    @Column
-    private byte[] photo;
+    @Column(nullable = true, columnDefinition = "LONGBLOB")
+    private byte[] photo; //stores url of the photo
 
-    @Column(unique = true, nullable = false)
+    @Column(nullable = false)
     private String mobileNumber;
 
     @Column(nullable = false)
@@ -38,6 +41,20 @@ public class User implements Serializable {
 
     @Column(nullable = false)
     private boolean isInitiated;
+
+    @Column
+    private String remarks;
+
+    @Column
+    private String email;
+
+    public byte[] getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(byte[] photo) {
+        this.photo = photo;
+    }
 
     public String getGrNo() {
         return this.grNo;
@@ -59,6 +76,14 @@ public class User implements Serializable {
         return this.department;
     }
 
+    public String getSubDepartment() {
+        return subDepartment;
+    }
+
+    public void setSubDepartment(String subDepartment) {
+        this.subDepartment = subDepartment;
+    }
+
     public void setDepartment(String department) {
         this.department = department;
     }
@@ -69,14 +94,6 @@ public class User implements Serializable {
 
     public void setTotalAttendance(BigDecimal totalAttendance) {
         this.totalAttendance = totalAttendance;
-    }
-
-    public byte[] getPhoto() {
-        return this.photo;
-    }
-
-    public void setPhoto(byte[] photo) {
-        this.photo = photo;
     }
 
     public String getMobileNumber() {
@@ -109,5 +126,21 @@ public class User implements Serializable {
 
     public void setIsInitiated(boolean isInitiated) {
         this.isInitiated = isInitiated;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getRemarks() {
+        return remarks;
+    }
+
+    public void setRemarks(String remarks) {
+        this.remarks = remarks;
     }
 }
