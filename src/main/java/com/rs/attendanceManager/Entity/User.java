@@ -6,6 +6,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 
 @Entity
+@Table(name = "users")
 public class User implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -28,7 +29,7 @@ public class User implements Serializable {
 
     @Lob
     @Column(nullable = true, columnDefinition = "LONGBLOB")
-    private byte[] photo; //stores url of the photo
+    private byte[] photo;
 
     @Column(nullable = false)
     private String mobileNumber;

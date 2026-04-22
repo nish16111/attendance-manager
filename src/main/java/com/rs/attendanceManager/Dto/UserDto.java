@@ -1,6 +1,8 @@
 package com.rs.attendanceManager.Dto;
 
+import com.rs.attendanceManager.Entity.User;
 import java.math.BigDecimal;
+import java.util.Base64;
 
 public class UserDto {
     private String name;
@@ -15,6 +17,24 @@ public class UserDto {
     private String photoBase64; // base64 string
     private String email;
     private String remarks;
+
+    public UserDto(User user) {
+        this.name = user.getName();
+        this.grNo = user.getGrNo();
+        this.department = user.getDepartment();
+        this.subDepartment = user.getSubDepartment();
+        this.totalAttendance = user.getTotalAttendance();
+        this.mobileNumber = user.getMobileNumber();
+        this.area = user.getArea();
+        this.age = user.getAge();
+        this.isInitiated = user.getIsInitiated();
+        this.email = user.getEmail();
+        this.remarks = user.getRemarks();
+        if(user.getPhoto() != null) {
+            String base64 = Base64.getEncoder().encodeToString(user.getPhoto());
+            this.photoBase64 = base64;
+        }
+    }
 
     public String getName() {
         return name;

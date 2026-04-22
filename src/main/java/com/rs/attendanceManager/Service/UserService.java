@@ -1,19 +1,20 @@
 package com.rs.attendanceManager.Service;
 
+import com.rs.attendanceManager.Dto.CreateUserRequest;
+import com.rs.attendanceManager.Dto.UpdateUserRequest;
 import com.rs.attendanceManager.Dto.UserDto;
-import com.rs.attendanceManager.Entity.User;
-import jakarta.validation.Valid;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.util.Optional;
+import java.util.List;
 
 public interface UserService {
 
-    UserDto fetchUserBygrNo(String grNo);
+    UserDto fetchUserByGrNo(String grNo);
 
-    User createUser(@Valid User user);
+    UserDto createUser(CreateUserRequest request);
 
-    User updateUser(@Valid User user);
+    UserDto updateUser(String grNo, UpdateUserRequest request);
 
     void deleteUser(String grNo);
+
+    List<UserDto> fetchAllUsers();
 }

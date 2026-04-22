@@ -1,97 +1,61 @@
 package com.rs.attendanceManager.Controller;
 
+import com.rs.attendanceManager.Dto.CreateUserRequest;
+import com.rs.attendanceManager.Dto.UpdateUserRequest;
 import com.rs.attendanceManager.Dto.UserDto;
-import com.rs.attendanceManager.Entity.User;
 import com.rs.attendanceManager.Service.UserService;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.math.BigDecimal;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.List;
 
+@Validated
 @RestController
-@CrossOrigin
-@RequestMapping("/home/users/")
+@RequestMapping("/api/users")
 public class HomeController {
 
-    @Autowired
-    UserService userService;
+    private final UserService userService;
 
-    @GetMapping("fetchUserBygrNo")
-    public ResponseEntity<?> fetchUserBygrNo(@RequestParam String grNo) {
-
-        try {
-            return ResponseEntity.ok(userService.fetchUserBygrNo(grNo));
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error while fetching user: " + e.getMessage());
-        }
+    public HomeController(UserService userService) {
+        this.userService = userService;
     }
 
-    @PostMapping("createUser")
-    public ResponseEntity<?> createUser(
-            @RequestParam("grNo") String grNo,
-            @RequestParam("name") String name,
-            @RequestParam("department") String department,
-            @RequestParam("subDepartment") String subDepartment,
-            @RequestParam("totalAttendance") BigDecimal totalAttendance,
-            @RequestParam("photo") MultipartFile photo,
-            @RequestParam("mobileNumber") String mobileNumber,
-            @RequestParam("area") String area,
-            @RequestParam("age") int age,
-            @RequestParam("isInitiated") boolean isInitiated,
-            @RequestParam("remarks") String remarks,
-            @RequestParam("email") String email
+    @GetMapping("/{grNo}")
+    public ResponseEntity<UserDto> fetchUserByGrNo(@PathVariable String grNo) {
+        return ResponseEntity.ok(userService.fetchUserByGrNo(grNo));
+    }
+
+    @PostMapping(consumes = {"multipart/form-data"})
+    public ResponseEntity<UserDto> createUser(@Valid @ModelAttribute CreateUserRequest request) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(userService.createUser(request));
+    }
+
+    @PutMapping(value = "/{grNo}", consumes = {"multipart/form-data"})
+    public ResponseEntity<UserDto> updateUser(
+            @PathVariable String grNo,
+            @Valid @ModelAttribute UpdateUserRequest request
     ) {
-        try {
-            User user = new User();
-            user.setGrNo(grNo);
-            user.setName(name);
-            user.setDepartment(department);
-            user.setSubDepartment(subDepartment);
-            user.setTotalAttendance(totalAttendance);
-            user.setPhoto(photo.getBytes());
-            user.setMobileNumber(mobileNumber);
-            user.setAge(age);
-            user.setArea(area);
-            user.setIsInitiated(isInitiated);
-            user.setRemarks(remarks);
-            user.setEmail(email);
-
-            User userResponse = userService.createUser(user);
-            return ResponseEntity.ok(userResponse);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error while creating user: " + e.getMessage());
-        }
+        return ResponseEntity.ok(userService.updateUser(grNo, request));
     }
 
-    @PutMapping("updateUser")
-    public ResponseEntity<?> updateUser(@Valid @RequestBody User user) {
-        try{
-            User userResponse = userService.updateUser(user);
-            if(userResponse == null) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
-            }
-            return ResponseEntity.ok(userResponse);
-
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error while updating user: " + e.getMessage());
-        }
+    @DeleteMapping("/{grNo}")
+    public ResponseEntity<Void> deleteUser(@PathVariable String grNo) {
+        userService.deleteUser(grNo);
+        return ResponseEntity.noContent().build();
     }
 
-    @DeleteMapping("deleteUser")
-    public ResponseEntity<?> deleteUser(@RequestParam String grNo) {
-        try{
-            userService.deleteUser(grNo);
-            return ResponseEntity.ok("User with grNo: " + grNo + " removed successfully");
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error while deleting the user: " + e.getMessage());
-        }
+    @GetMapping
+    public ResponseEntity<List<UserDto>> fetchAllUsers() {
+        return ResponseEntity.ok(userService.fetchAllUsers());
     }
 }
