@@ -1,5 +1,6 @@
 package com.rs.attendanceManager.Controller;
 
+import com.rs.attendanceManager.Dto.BulkUserImportResponse;
 import com.rs.attendanceManager.Dto.CreateUserRequest;
 import com.rs.attendanceManager.Dto.UpdateUserRequest;
 import com.rs.attendanceManager.Dto.UserDto;
@@ -14,8 +15,10 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -38,6 +41,11 @@ public class HomeController {
     @PostMapping(consumes = {"multipart/form-data"})
     public ResponseEntity<UserDto> createUser(@Valid @ModelAttribute CreateUserRequest request) {
         return ResponseEntity.status(HttpStatus.CREATED).body(userService.createUser(request));
+    }
+
+    @PostMapping(value = "/import", consumes = {"multipart/form-data"})
+    public ResponseEntity<BulkUserImportResponse> importUsers(@RequestParam("file") MultipartFile file) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(userService.importUsers(file));
     }
 
     @PutMapping(value = "/{grNo}", consumes = {"multipart/form-data"})
